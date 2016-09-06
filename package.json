@@ -1,0 +1,19 @@
+{
+  "name": "cornelius-k-url-shortener",
+  "version": "1.0.0",
+  "description": "A web application that does url shortening",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hzdg/cornelius-k-url-shortener.git"
+  },
+  "author": "= <neilkempin@gmail.com> (http://neilkempin.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hzdg/cornelius-k-url-shortener/issues"
+  },
+  "homepage": "https://github.com/hzdg/cornelius-k-url-shortener#readme"
+}
