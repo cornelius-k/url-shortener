@@ -1,13 +1,10 @@
 /*
 * URL Service
-* logic for working with URLS and shortening goes here
+* logic for working with URLS, shortening, and database interaction goes here
 */
 var appRoot = require('app-root-path');
 var config = require(appRoot + '/config.global');
 var MongoClient = require('mongodb').MongoClient;
-
-var db;
-
 
 //shortening algorithms
 function shortenBasicHash(str){
@@ -27,6 +24,7 @@ function shortenVowless(str){
 }
 
 module.exports = {
+
   shorten : function (url, style = ''){
     var shortened;
 
