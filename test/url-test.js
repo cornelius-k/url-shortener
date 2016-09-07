@@ -11,7 +11,7 @@ var URLService = require(appRoot + '/services/url-service.js');
 var url = require('url');
 
 /*
-* Unit Tests
+* Shortening function unit tests
 */
 describe('Shortening Functions', function(){
 
@@ -45,7 +45,7 @@ describe('Shortening Functions', function(){
 });
 
 /*
-* Unit Tests
+* Database interaction unit tests
 */
 describe('URL Service will', function(){
 
@@ -81,36 +81,48 @@ describe('URL Service will', function(){
 });
 
 /*
-* REST API Tests
+* REST API Tests / integration
 */
+var key; //to be assigned to the key (shortened url) return value from generated redirect
 describe('URL API', function(){
 
-  var testURL = 'http://test.com';
+  var global = {};
+  before(function(){
+    global.testURL = 'http://test.com';
+    global.key = "";
+  });
 
-  var key; //to be assigned to the key (shortened url) return value from generated redirect
+  /*
+  * CRUD : create a record, retrieve the same record, delete the record
+  * and verify that it is no longer retrievable
+  */
+
   it('responds with a shortened url for requests: POST /api/url', function(done){
+
     request(app)
     .post('/api/url')
-    .send({url: testURL})
+    .send({url: global.testURL})
     .end(function(err, res){
       expect(err).to.be.null;
       expect(res.statusCode).to.be.equal(201);
       expect(res).to.be.json;
       expect(res.body.key).to.not.be.null;
-      expect(res.body.key === testURL).to.be.false;
-      key = res.body.key; //save the key (shortened url) for use in other tests
+      expect(res.body.key === global.testURL).to.be.false;
+      global.key = res.body.key; //save the key (shortened url) for use in other tests
       done();
     });
   });
 
   //use same key retrived from creation test
   it('successfully redirects GET /* made with test redirect key', function(done){
+    expect(key).to.be.not.null;
+    expect(global.key).to.not.be.empty;
     request(app)
-    .get('/'+ key)
+    .get('/'+ global.key)
     .end(function(err, res){
       expect(err).to.be.null;
       expect(res.statusCode).to.be.equal(301);
-      expect(res.header['localhost'] === testURL);
+      expect(res.header['localhost'] === global.testURL);
       done();
     });
   });
@@ -118,14 +130,16 @@ describe('URL API', function(){
   //use same key retrived from creation test
   it('successfully deletes a redirection via a supplied key', function(done){
     request(app)
-    .delete('/api/url/' + key)
+    .delete('/api/key')
+    .send({key : global.key})
     .end(function(err, res){
       expect(err).to.be.null;
       expect(res.statusCode).to.be.equal(200);
       request(app)
-      .get('/' + shortened)
+      .get('/' + global.key)
       .end(function(err, res){
-        expect(res.statusCode).to.be.equal(400);
+        expect(err).to.be.null;
+        expect(res.statusCode).to.be.equal(404);
         done();
       });
     });
