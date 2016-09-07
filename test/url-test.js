@@ -30,6 +30,17 @@ describe('Shortening Functions', function(){
       done();
   });
 
+  it('cleans urls by ensuring they have an http protocol prefix', function(done){
+      var cleaned = URLservice.cleanURL(longURLNoHTTP);
+      expect(longURLNoHTTP === 'http://' + longURLNoHTTP);
+      done()
+  });
+
+  it('validates urls are formed correctly', function(done){
+    var validation = URLService.validateURL(longURLNoHTTP);
+    expect(validation).to.be.false;
+  });
+
 });
 
 /*
