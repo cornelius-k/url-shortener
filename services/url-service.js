@@ -2,6 +2,12 @@
 * URL Service
 * logic for working with URLS and shortening goes here
 */
+var appRoot = require('app-root-path');
+var config = require(appRoot + '/config.global');
+var MongoClient = require('mongodb').MongoClient;
+
+var db;
+
 
 //shortening algorithms
 function shortenBasicHash(str){
@@ -16,8 +22,12 @@ function shortenBasicHash(str){
   return hash;
 }
 
+function shortenVowless(str){
+  return str;
+}
+
 module.exports = {
-  shorten : function(url, style = ''){
+  shorten : function (url, style = ''){
     var shortened;
 
     switch(style){
@@ -27,7 +37,7 @@ module.exports = {
       default:
         shortened = shortenBasicHash(url);
     }
-    
+
     return shortened;
   },
 
@@ -36,6 +46,17 @@ module.exports = {
     if(protocol == nul)
       url = "http://" + url;
     return url;
+  },
+
+  saveRedirect: function(redirect, done){
+    MongoClient.connect(config.mongoURL + config.dbName, (err, db) => {
+      if (err) console.log(err);
+
+      db.collection(config.dbCollectionName).insert(redirect, (err, result) => {
+        if(err) console.log(err);
+        done(err, result);
+      });
+    });
   }
 
 };
