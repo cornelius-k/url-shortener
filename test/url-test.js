@@ -43,6 +43,34 @@ describe('Shortening Functions', function(){
 
 });
 
+describe('URL Redirect CRUD', function(){
+  var redirect = {key: 'abcd', toURL: 'http://test.com/test'};
+  it('saves a test redirect to database', function(done){
+    URLService.saveRedirect(redirect, function(err, response){
+      expect(err).to.be.null;
+      expect(response).to.not.be.null;
+      done();
+    });
+  });
+
+  it('retrieves tests redirect from database', function(done){
+    URLService.getRedirectForKey(redirect.key, function(err, response){
+      expect(err).to.be.null;
+      expect(response.toURL === 'http://test.com/test');
+    });
+  })
+
+  it('deletes test redirect from database', function(done){
+    URLService.removeRedirectWithKey(redirect.key, function(err, response){
+      expect(err).to.be.null;
+      expect(response).to.not.be.null;
+      URLService.getRedirectForKey(redirect.key, function(err, response){
+        expect(err).to.not.be.null;
+      });
+    });
+  });
+});
+
 /*
 * REST API Tests
 */
