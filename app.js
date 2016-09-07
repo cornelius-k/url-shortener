@@ -24,13 +24,11 @@ const PORT = process.env.PORT || 3000;
 
 
 //connect to mongo and start web server
-var db;
 MongoClient.connect(config.mongoURL + config.dbName, (err, database) =>{
   if (err) return console.log(err);
   app.listen(PORT, function() {
     console.log('listening on ', PORT);
   });
-  db = database;
 });
 
 /*
