@@ -3,7 +3,8 @@
 */
 module.exports = {
   mongoURL: 'mongodb://localhost:27017',
-  dbName: '/hz'
+  dbName: '/hz',
+  dbCollectionName: 'redirects'
 };
 
 //allow config to be overriden by dev environment-specifc config file
