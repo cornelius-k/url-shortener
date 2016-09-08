@@ -7,6 +7,8 @@ var config = require(appRoot + '/config.global');
 var MongoClient = require('mongodb').MongoClient;
 var validURL = require('valid-url');
 var nodeURL = require('url');
+var anagramica = require('anagramica');
+var q = require('q');
 
 module.exports = {
 
@@ -59,8 +61,23 @@ module.exports = {
     return this.truncate(str);
   },
 
+  anagram : function(str){
+    str = this.removeProtocol(str);
+    str = this.stripSlashes(str);
+    str = this.removeSpecialChars(str);
+    var promise = q.defer();
+    return q.fcall(anagramica.best(str, function(err, response){
+      return response.toString();
+    })).then(function(str){
+      return this.truncate(str);
+    });
+
+  },
+
   shorten : function (url, method = 'default'){
     var shortened;
+    var shortened2;
+    var promises = [];
     switch(method){
       case "novowels":
         shortened = this.shortenVowless(url);
@@ -69,7 +86,7 @@ module.exports = {
         shortened = this.basicHash(url);
         break;
       case "anagram":
-        shortened = this.anagram(url);
+        shortened2 = this.anagram(url);
         break;
       case "randomString":
         shortened = this.randomString();
@@ -78,7 +95,6 @@ module.exports = {
         shortened = this.randomString();
         break;
     }
-
     return shortened;
   },
 
