@@ -32,7 +32,7 @@ module.exports.addRoutes = function(app) {
        var redirect = {
          toURL: req.body.url,
          key: '',
-         style: req.body.style //optional
+         method: req.body.method
        };
 
        // validate
@@ -43,7 +43,7 @@ module.exports.addRoutes = function(app) {
         return res.status(400).json({error: 'URL' + redirect.from + ' is invalid'});
 
        // generate shortened URL "key"
-       redirect.key = URLService.shorten(redirect.toURL, redirect.style);
+       redirect.key = URLService.shorten(redirect.toURL, redirect.method);
 
        // save new redirect
        URLService.saveRedirect(redirect, (err, result) =>{

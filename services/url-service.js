@@ -56,15 +56,18 @@ module.exports = {
     return this.truncate(str.replace(/[aeiou]/gi, ''));
   },
 
-  shorten : function (url, style = ''){
+  shorten : function (url, method = 'default'){
     var shortened;
-    style = style || 'default';
-    switch(style){
-      case "vowless":
+    switch(method){
+      case "novowels":
         shortened = this.shortenVowless(url);
         break;
       case "basicHash":
         shortened = this.basicHash(url);
+        break;
+      case "anagram":
+        shortened = this.anagram(url);
+        break;
       case "default":
         shortened = this.randomString();
         break;
