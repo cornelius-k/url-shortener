@@ -71,7 +71,10 @@ module.exports = {
       case "anagram":
         shortened = this.anagram(url);
         break;
-      case "default":
+      case "randomString":
+        shortened = this.randomString();
+        break;
+      default:
         shortened = this.randomString();
         break;
     }
