@@ -36,7 +36,7 @@ MongoClient.connect(config.mongoURL + config.dbName, (err, database) =>{
 * Application Routes
 */
 
-app.get('/', (req, res) => res.send('working'));
+app.get('/', (req, res) => res.render('index'));
 
 //url api routes live in url-api
 require('./api/url-api').addRoutes(app);

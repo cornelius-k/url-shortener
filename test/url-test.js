@@ -55,9 +55,15 @@ describe('Shortening Functions', function(){
       done()
   });
 
-  it('validates urls are formed correctly', function(done){
-    var validation = URLService.isValidURL(longURLNoHTTP);
-    expect(validation).to.be.false;
+  it('validates urls are formed correctly with protocol', function(done){
+    var validWithSpecialChars = URLService.isValidURL('http://zombo.comb/^^^');
+    var validWithoutExtension = URLService.isValidURL('http://zombo');
+    var validWithoutProtocol = URLService.isValidURL('zombo.com');
+    var actuallyValid = URLService.isValidURL('http://zombo.com');
+    expect(validWithSpecialChars).to.be.false;
+    expect(validWithoutProtocol).to.be.false;
+    //expect(validWithoutExtension).to.be.false;
+    expect(actuallyValid).to.be.true;
     done();
   });
 

@@ -13,6 +13,18 @@ var nodeURL = require('url');
 
 module.exports.addRoutes = function(app) {
 
+     //check that a url is formatted correctly
+     app.get('/api/url/valid', function(req, res){
+
+       var url = req.query.url;
+       if(!url)
+         return res.status(400).json({error: "A url is required"});
+
+       url = URLService.cleanURL(url);
+       var valid = URLService.isValidURL(url);
+
+       valid ?  res.status(200) : res.status(400);
+     });
 
      // Create and save a new redirect / shortened URL
      app.post('/api/url', (req, res) => {
@@ -35,9 +47,13 @@ module.exports.addRoutes = function(app) {
 
        // save new redirect
        URLService.saveRedirect(redirect, (err, result) =>{
-
-         err ? res.status(400).json({error: err}) : res.status(201).json({key : result.key})}
-       );
+         var host = req.protocol + '://' + req.get('Host') + '/';
+         if(!err){
+           res.status(201).json({shortened : host + result.key});
+         }else{
+           res.status(400).json({error: err});
+         }
+       });
      });
 
      // remove a redirect from database
