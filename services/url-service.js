@@ -8,11 +8,22 @@ var MongoClient = require('mongodb').MongoClient;
 var validURL = require('valid-url');
 var nodeURL = require('url');
 
-
-
-
-
 module.exports = {
+
+  //string manipulation
+  stripSlashes: function(str){
+    return str.replace(new RegExp('/', 'g'), "");
+  },
+
+  removeProtocol: function(str){
+    var url = nodeURL.parse(str);
+    return url.href.replace(url.protocol, '');
+  },
+
+  removeSpecialChars: function(str){
+    //regex wizardry credit annakata from SO post
+    return str.replace(/[^\w\s]/gi, '');
+  },
 
   //shortening algorithms
   basicHash: function(str){
@@ -35,6 +46,7 @@ module.exports = {
   },
 
   shortenVowless : function(str){
+    str.substr('')
     return str;
   },
 
