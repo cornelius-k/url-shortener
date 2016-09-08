@@ -17,6 +17,25 @@ describe('Shortening Functions', function(){
 
   var longURL = 'http://zombo.com/its/zombo/com';
   var longURLNoHTTP = 'zombo.com/its/zombo/com';
+
+  it('strips slashes from a string', function(done){
+    var stripped = URLService.stripSlashes(longURL);
+    expect(stripped).to.equal('http:zombo.comitszombocom');
+    done();
+  });
+
+  it('removes protocol from url string', function(done){
+    var noProtocol = URLService.removeProtocol(longURL);
+    expect(noProtocol).to.equal('//' + longURLNoHTTP);
+    done();
+  });
+
+  it('removes all special characters from a string', function(done){
+    var nothingSpecial = URLService.removeSpecialChars('t.e.x.t/?=%!#');
+    expect(nothingSpecial).to.equal('text');
+    done();
+  });
+
   it('generates a valid basic shortened string', function(done){
     var shortened = URLService.shorten(longURL);
     expect(shortened).to.be.a.string;
