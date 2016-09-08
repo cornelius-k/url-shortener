@@ -14,6 +14,7 @@ var MongoClient = require('mongodb').MongoClient;
 var app = express();
 exports.app = app;
 app.set('view engine', 'jade');
+app.set('views', appRoot + '/public/views');
 app.use('/public', express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({
    extended: true,
@@ -35,7 +36,7 @@ MongoClient.connect(config.mongoURL + config.dbName, (err, database) =>{
 * Application Routes
 */
 
-app.get('/', (req, res) => res.send('working'));
+app.get('/', (req, res) => res.render('index'));
 
 //url api routes live in url-api
 require('./api/url-api').addRoutes(app);
