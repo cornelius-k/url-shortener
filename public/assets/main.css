@@ -1,5 +1,21 @@
-#urlbox{
 
+h1{
+  font-family: helvetica;
+  font-weight: lighter;
+}
+
+.stretch{
+  letter-spacing: 3vw;
+}
+.narrow{
+  letter-spacing: 1vw;
+  margin-left:20px;
+}
+
+#urlbox{
+  font-size: 7vw;
+  border-bottom: 1px solid grey;
+  margin: 0 10vw 0 0;
 }
 .nofocus {
   outline-width: 0;
