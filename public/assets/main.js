@@ -55,7 +55,7 @@ var requestShortURL = function(longURL){
 };
 
 function displayShortenedURL(url){
-  var markup = "<a href=" + url + ">" + url + "</a>";
+  var markup = "<a target='_blank' href=" + url + ">" + url + "</a>";
   $shortenedtext.innerHTML = markup;
   $($shortenedbox).fadeIn(900);
 }

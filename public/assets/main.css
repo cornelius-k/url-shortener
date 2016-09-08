@@ -4,9 +4,6 @@ body{
   margin: 0;
 
 }
-h1{
-
-}
 
 h1{
   letter-spacing: 0vw;
@@ -34,12 +31,17 @@ h1{
   height: 40px;
   display: inline-block;
 }
-a{
+#shortenedtext a{
   color: #ceffdf;
-  background: #688071;
+  background: rgba(104,128,113, 0.5);
+}
+#shortenedtext a:hover{
+  background: rgba(104,128,113, .8);
 }
 #shortenedtext{
   text-indent:1vw;
+  width: 100%;
+  word-wrap: break-word;
 }
 #shortenedbox{
   padding: 2vw;
