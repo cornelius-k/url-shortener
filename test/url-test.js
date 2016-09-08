@@ -44,8 +44,8 @@ describe('Shortening Functions', function(){
   });
 
   it('generates a shortened string via vowless style', function(done){
-      var shortened = URLService.shortenVowless(longURL);
-      expect(shortened === 'zmbtszmbcm');
+      var shortened = URLService.shortenVowless('http://zombo.com/welcome');
+      expect(shortened === 'zmbcmwlcm').to.be.true;
       done();
   });
 
