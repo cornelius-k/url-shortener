@@ -140,7 +140,6 @@ describe('URL API', function(){
 
   //use same key retrived from creation test
   it('successfully redirects GET /* made with test redirect key', function(done){
-    console.log(global.key);
     expect(key).to.be.not.null;
     expect(global.key).to.not.be.empty;
     request(app)
