@@ -14,7 +14,8 @@ var MongoClient = require('mongodb').MongoClient;
 var app = express();
 exports.app = app;
 app.set('view engine', 'jade');
-app.use('/public', express.static(__dirname + '/public'));
+app.set('views', appRoot + '/public/views');
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({
    extended: true,
    limit: '5mb'
