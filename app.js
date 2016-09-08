@@ -15,7 +15,7 @@ var app = express();
 exports.app = app;
 app.set('view engine', 'jade');
 app.set('views', appRoot + '/public/views');
-app.use('/public', express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({
    extended: true,
    limit: '5mb'
