@@ -8,7 +8,7 @@ var valid;
 
 //selectors
 var $urlbox = document.getElementById('urlbox');             //box for original url to be shortened
-var $shortenedbox = document.getElementById('shortenedbox')  //box for shortened url content
+var $shortenedbox = document.getElementById('shortenedbox');  //box for shortened url content
 var $shortenedtext = document.getElementById('shortenedtext'); //place for actual shortened url text
 var $notify = document.getElementById('notify');             //notifications go here
 var $validity = document.getElementById('colorblock');         //indicates if url being typed is valid
@@ -29,8 +29,6 @@ function typeInBox(event){
   url = url.startsWith('http') ? url : "http://" + url;
   valid = isURLValid(url);
 
-  console.log('it is '+ valid);
-
   if(valid){
     indicateURLValidity('valid');
     if (enterKeyPressed){
@@ -38,7 +36,6 @@ function typeInBox(event){
     }
   }
   else{
-    console.log('invalid');
     indicateURLValidity('invalid');
   }
 }
@@ -76,7 +73,6 @@ function notifyError(string){
 }
 
 function indicateURLValidity(validityClass){
-  console.log('here2');
   $validity.className = validityClass;
 }
 
