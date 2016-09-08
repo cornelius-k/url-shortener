@@ -1,7 +1,16 @@
 html
-  head    
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min')
-    script(src='assets/main.js')
+  head
+    
+    //main css
+    link(rel="stylesheet" href="assets/main.css")
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js")  
     title Link Shortener
+  
   body
-    h1 helloo
+  
+    h1 Shorten It
+    #urlbox(class="nofocus" contenteditable="true")
+        type text here
+        
+  //main js      
+  script(src='/assets/main.js')
