@@ -13,7 +13,7 @@ var $shortenedtext = document.getElementById('shortenedtext'); //place for actua
 var $notify = document.getElementById('notify');             //notifications go here
 var $validity = document.getElementById('colorblock');         //indicates if url being typed is valid
 var $options = document.getElementById('options');
-
+$($urlbox).focus();
 $urlbox.addEventListener('keydown', typeInBox);
 
 function typeInBox(event){
