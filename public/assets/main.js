@@ -12,6 +12,7 @@ var $shortenedbox = document.getElementById('shortenedbox');  //box for shortene
 var $shortenedtext = document.getElementById('shortenedtext'); //place for actual shortened url text
 var $notify = document.getElementById('notify');             //notifications go here
 var $validity = document.getElementById('colorblock');         //indicates if url being typed is valid
+var $options = document.getElementById('options');
 
 $urlbox.addEventListener('keydown', typeInBox);
 
@@ -32,7 +33,8 @@ function typeInBox(event){
   if(valid){
     indicateURLValidity('valid');
     if (enterKeyPressed){
-      requestShortURL(url);
+      var method = $(':radio:checked').val();
+      requestShortURL(url, method);
     }
   }
   else{
@@ -40,10 +42,8 @@ function typeInBox(event){
   }
 }
 
-
-var requestShortURL = function(longURL){
-  hideShortenedURL();
-  jQuery.post('/api/url', {url: longURL}, function(response){
+var requestShortURL = function(longURL, method){
+  jQuery.post('/api/url', {url: longURL, method: method}, function(response){
     if(response.error)
       notifyError(response.error);
     else
@@ -57,9 +57,6 @@ function displayShortenedURL(url){
   $($shortenedbox).fadeIn(900);
 }
 
-function hideShortenedURL(){
-//$($shortenedbox).fadeOut();
-}
 
 function notifyError(string){
   $notify.className = "invalid";

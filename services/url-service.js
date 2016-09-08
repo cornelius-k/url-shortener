@@ -53,7 +53,10 @@ module.exports = {
   },
 
   shortenVowless : function(str){
-    return this.truncate(str.replace(/[aeiou]/gi, ''));
+    str = this.removeProtocol(str);
+    str = this.stripSlashes(str);
+    str = str.replace(/[aeiou]/gi, '');
+    return this.truncate(str);
   },
 
   shorten : function (url, method = 'default'){

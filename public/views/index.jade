@@ -9,14 +9,18 @@ html
   
   body
     
-    //not visible stuff
-    #notify
-    #validity
-    
-    //visible stuff
     h1(class="stretch") Shorten / It
     #urlbox(class="nofocus" contenteditable="true")
     #colorblock(class="valid")
+      #options
+        text Random String
+        input(type="radio" name="method" value="randomString")
+        text Hashing Function
+        input(type="radio" name="method" value="basicHash")
+        text No Vowels
+        input(type="radio" name="method" value="novowels")
+        text Anagram
+        input(type="radio" name="method" value="anagram")
       #shortenedbox(class="nofocus")
         #icon(class="fa fa-link")
         #shortenedtext
