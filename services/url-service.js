@@ -90,7 +90,9 @@ module.exports = {
     MongoClient.connect(config.mongoURL + config.dbName, (err, db) => {
       if (err) console.log(err);
 
-      db.collection(config.dbCollectionName).insert(redirect, (err, result) => {
+      var col = db.collection(config.dbCollectionName);
+
+      col.insert(redirect, (err, result) => {
         if(err) console.log(err);
         //dig into mongo result set
         result = result.ops[0];
@@ -109,6 +111,7 @@ module.exports = {
         if(err) console.log(err);
         done(err, result);
       });
+      db.close();
     });
   },
 
@@ -118,9 +121,9 @@ module.exports = {
 
       db.collection(config.dbCollectionName).remove({key: key}, (err, result) => {
         if(err) console.log(err);
-        debugger;
         done(err, result);
       });
+      db.close();
     });
   }
 
