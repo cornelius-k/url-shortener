@@ -2,63 +2,72 @@
 * Main client-side js for url shortener
 */
 
-var $urlbox = document.getElementById('urlbox');
-var $shortenedbox = document.getElementById('shortenedbox');
 var globalText = '';
+var $ = jQuery;
+var valid;
 
-function keyTyped(event){
-  console.log('triggered', event);
-  //event.preventDefault();
-  //addCharacter(event.key);
-  if (event.keyCode === 10 || event.keyCode === 13){
+//selectors
+var $urlbox = document.getElementById('urlbox');             //box for original url to be shortened
+var $shortenedbox = document.getElementById('shortenedbox'); //place for result shortened url to go
+var $notify = document.getElementById('notify');             //notifications go here
+var $validity = document.getElementById('validity');         //indicates if url being typed is valid
+
+$urlbox.addEventListener('keydown', typeInBox);
+
+function typeInBox(event){
+  var enterKeyPressed = event.keyCode === 10 || event.keyCode === 13;
+  var charKeyPressed = event.key.length === 1;
+  var existingText = event.target.innerText;
+
+  if (enterKeyPressed)
     event.preventDefault();
-    submitText(event.target.innerText);
-    //submitURL(globalText);
+
+  url = charKeyPressed ? existingText + event.key : existingText;
+
+  url = url.startsWith('http') ? url : "http://" + url;
+  valid = isURLValid(url);
+
+
+  if(valid){
+    indicateURLValidity('valid');
+    if (enterKeyPressed)
+      requestShortURL(url);
+  else
+    indicateURLValidity('invalid');
   }
 }
 
-function submitText(string){
-  console.log('submitting Text');
-  jQuery.post('/api/url', {url: string}, function(response){
+
+var requestShortURL = function(longURL){
+  jQuery.post('/api/url', {url: longURL}, function(response){
     if(response.error)
       notifyError(response.error);
     else
       displayShortenedURL(response.shortened);
   });
-}
+};
 
 function displayShortenedURL(url){
   $shortenedbox.innerHTML = url;
 }
 
-function addCharacter(char){
-  globalText.concat(char);
+function notifyError(string){
+  $notify.className = "invalid";
+  $notify.innerHTML = string;
+
+  //fade out after a bit
+  window.setTimeout(function(){
+    $notify.className = "hidden";
+    $notify.innerHTML = "";
+  }, 5000);
 }
 
-function processChar(nakedChar){
-  return "<span>" + nakedChar + "</span>";
+function indicateURLValidity(validityClass){
+  $validity.className = validityClass;
 }
 
-window.addEventListener('mouseup', moveCaret(window, 3));
-function moveCaret(win, charCount) {
-  console.log('called');
-    var sel, range;
-    if (win.getSelection) {
-        sel = win.getSelection();
-        if (sel.rangeCount > 0) {
-            var textNode = sel.focusNode;
-            var newOffset = sel.focusOffset + charCount;
-            sel.collapse(textNode, Math.min(textNode.length, newOffset));
-        }
-    } else if ( (sel = win.document.selection) ) {
-        if (sel.type != "Control") {
-            range = sel.createRange();
-            range.move("character", charCount);
-            range.select();
-        }
-    }
+//regex credit: somewhere on SO
+function isURLValid(url) {
+	var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+	return regexp.test(url) && url.includes('.');
 }
-
-
-
-$urlbox.addEventListener('keydown', keyTyped);
