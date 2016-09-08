@@ -8,7 +8,8 @@ var valid;
 
 //selectors
 var $urlbox = document.getElementById('urlbox');             //box for original url to be shortened
-var $shortenedbox = document.getElementById('shortenedbox'); //place for result shortened url to go
+var $shortenedbox = document.getElementById('shortenedbox')  //box for shortened url content
+var $shortenedtext = document.getElementById('shortenedtext'); //place for actual shortened url text
 var $notify = document.getElementById('notify');             //notifications go here
 var $validity = document.getElementById('validity');         //indicates if url being typed is valid
 
@@ -48,7 +49,8 @@ var requestShortURL = function(longURL){
 };
 
 function displayShortenedURL(url){
-  $shortenedbox.innerHTML = url;
+  $shortenedtext.innerHTML = url;
+  $shortenedbox.style.opacity = 1;
 }
 
 function notifyError(string){

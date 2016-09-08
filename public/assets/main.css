@@ -11,12 +11,28 @@ h1{
   letter-spacing: 1vw;
   margin-left:20px;
 }
+#urlbox{
+}
+#shortenedbox, #arrow{
+  font-size: 10vw;
+  opacity: 0;
+  transition:opacity 0.5s linear;
+  height: 40px;
+  display: inline-block;
+}
 
 #urlbox{
   font-size: 7vw;
-  border-bottom: 1px solid grey;
   margin: 0 10vw 0 0;
+  border-bottom: 1px solid grey;
 }
 .nofocus {
   outline-width: 0;
+}
+
+.invalid{
+  color:#ff6666;
+}
+.valid{
+  color:#97d949;
 }
