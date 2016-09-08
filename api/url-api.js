@@ -47,9 +47,13 @@ module.exports.addRoutes = function(app) {
 
        // save new redirect
        URLService.saveRedirect(redirect, (err, result) =>{
-
-         err ? res.status(400).json({error: err}) : res.status(201).json({shortened : result.key})}
-       );
+         var host = req.protocol + '://' + req.get('Host') + '/';
+         if(!err){
+           res.status(201).json({shortened : host + result.key});
+         }else{
+           res.status(400).json({error: err});
+         }
+       });
      });
 
      // remove a redirect from database
