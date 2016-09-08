@@ -47,8 +47,8 @@ module.exports.addRoutes = function(app) {
 
        // save new redirect
        URLService.saveRedirect(redirect, (err, result) =>{
-         
-         err ? res.status(400).json({error: err}) : res.status(201).json({key : result.key})}
+
+         err ? res.status(400).json({error: err}) : res.status(201).json({shortened : result.key})}
        );
      });
 

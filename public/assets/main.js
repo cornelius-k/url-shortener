@@ -3,8 +3,7 @@
 */
 
 var $urlbox = document.getElementById('urlbox');
-$urlbox.setAttribute('data-text', '');
-
+var $shortenedbox = document.getElementById('shortenedbox');
 var globalText = '';
 
 function keyTyped(event){
@@ -12,20 +11,28 @@ function keyTyped(event){
   //event.preventDefault();
   //addCharacter(event.key);
   if (event.keyCode === 10 || event.keyCode === 13){
-    addCharacter('x');
     event.preventDefault();
+    submitText(event.target.innerText);
     //submitURL(globalText);
   }
 }
 
 function submitText(string){
-  console.log('submitted');
+  console.log('submitting Text');
+  jQuery.post('/api/url', {url: string}, function(response){
+    if(response.error)
+      notifyError(response.error);
+    else
+      displayShortenedURL(response.shortened);
+  });
+}
+
+function displayShortenedURL(url){
+  $shortenedbox.innerHTML = url;
 }
 
 function addCharacter(char){
   globalText.concat(char);
-  var coolChar = processChar(char);
-  $urlbox.innerHTML += coolChar;
 }
 
 function processChar(nakedChar){
