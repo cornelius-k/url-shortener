@@ -39,17 +39,16 @@ module.exports = {
   },
 
   randomString: function(){
-    return Math.random().toString(36).substring(5);
+    return this.truncate(Math.random().toString(36));
   },
 
   shortenBasicHash: function(str){
     var hash = this.basicHash(str);
     var hashedStr = hash.toString();
-    hashedStr = hashedStr.substr(0, 4);
-    return hashedStr;
+    return this.truncate(hashedStr);
   },
 
-  truncate : function(str, length = 5){
+  truncate : function(str, length = 7){
     return str.substr(0, length);
   },
 
