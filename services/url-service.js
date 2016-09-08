@@ -38,6 +38,10 @@ module.exports = {
     return hash;
   },
 
+  randomString: function(){
+    return Math.random().toString(36).substring(5);
+  },
+
   shortenBasicHash: function(str){
     var hash = this.basicHash(str);
     var hashedStr = hash.toString();
@@ -45,9 +49,12 @@ module.exports = {
     return hashedStr;
   },
 
+  truncate : function(str, length = 5){
+    return str.substr(0, length);
+  },
+
   shortenVowless : function(str){
-    str.substr('')
-    return str;
+    return this.truncate(str.replace(/[aeiou]/gi, ''));
   },
 
   shorten : function (url, style = ''){
@@ -57,8 +64,10 @@ module.exports = {
       case "vowless":
         shortened = this.shortenVowless(url);
         break;
+      case "basicHash":
+        shortened = this.basicHash(url);
       case "default":
-        shortened = this.shortenBasicHash(url);
+        shortened = this.randomString();
         break;
     }
 

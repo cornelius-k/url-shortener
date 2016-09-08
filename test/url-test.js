@@ -44,8 +44,8 @@ describe('Shortening Functions', function(){
   });
 
   it('generates a shortened string via vowless style', function(done){
-      var shortened = URLService.shortenVowless('http://zombo.com/welcome');
-      expect(shortened === 'zmbcmwlcm').to.be.true;
+      var shortened = URLService.shortenVowless('zombocom');
+      expect(shortened === 'zmbcm').to.be.true;
       done();
   });
 
@@ -131,7 +131,7 @@ describe('URL API', function(){
       expect(err).to.be.null;
       expect(res.statusCode).to.be.equal(201);
       expect(res).to.be.json;
-      expect(res.body.key).to.not.be.null;
+      expect(res.body).to.not.be.null;
       expect(res.body.key === global.testURL).to.be.false;
       global.key = res.body.key; //save the key (shortened url) for use in other tests
       done();
@@ -140,6 +140,7 @@ describe('URL API', function(){
 
   //use same key retrived from creation test
   it('successfully redirects GET /* made with test redirect key', function(done){
+    console.log(global.key);
     expect(key).to.be.not.null;
     expect(global.key).to.not.be.empty;
     request(app)

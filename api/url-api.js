@@ -49,7 +49,7 @@ module.exports.addRoutes = function(app) {
        URLService.saveRedirect(redirect, (err, result) =>{
          var host = req.protocol + '://' + req.get('Host') + '/';
          if(!err){
-           res.status(201).json({shortened : host + result.key});
+           res.status(201).json({shortened : host + result.key, key : result.key});
          }else{
            res.status(400).json({error: err});
          }
