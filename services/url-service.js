@@ -37,7 +37,8 @@ module.exports = {
       hash  = ((hash << 5) - hash) + chr;
       hash |= 0; // Convert to 32bit integer
     }
-    return hash;
+    str = hash.toString();
+    return str;
   },
 
   randomString: function(){
