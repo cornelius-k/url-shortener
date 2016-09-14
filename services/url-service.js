@@ -101,7 +101,7 @@ module.exports = {
 
   cleanURL : function(url){
     var protocol = nodeURL.parse(url).protocol;
-    if(protocol == null)
+    if(protocol === null)
       url = "http://" + url;
     return url;
   },
@@ -112,20 +112,43 @@ module.exports = {
 
   //CRUD Operations
   saveRedirect: function(redirect, done){
+
     MongoClient.connect(config.mongoURL + config.dbName, (err, db) => {
       if (err) console.log(err);
-
       var col = db.collection(config.dbCollectionName);
-
-      col.insert(redirect, (err, result) => {
-        if(err) console.log(err);
-        //dig into mongo result set
-        result = result.ops[0];
-        done(err, result);
-      });
-
-      db.close();
+      attemptSave(col, db, redirect);
     });
+
+    // recursively attempt saving redirect, varying the redirect key with a
+    // counter appended to key, until key is unique
+    var attemptSave = function(collection, db, redirect, counter) {
+
+      // counter is only used in recursion
+      if (counter) {
+        redirect.key = redirect.nonUniqueKey.concat('-' + counter.toString());
+        counter++;
+      } else {
+        // preserve original key, and initialize counter
+        counter = 1;
+        redirect.nonUniqueKey = redirect.key;
+      }
+
+      collection.find({key: redirect.key}).count(function(err, count){
+            if (count === 0) {
+              collection.insert(redirect, (err, result) => {
+                if(err) console.log(err);
+                //dig into mongo result set
+                result = result.ops[0];
+                db.close();
+                done(err, result);
+              });
+            } else {
+             attemptSave(collection, db, redirect, counter);
+            }
+       });
+    };
+
+
   },
 
   getRedirectForKey: function(key, done){
