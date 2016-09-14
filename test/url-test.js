@@ -114,7 +114,8 @@ describe('URL API', function(){
   var global = {};
   before(function(){
     global.testURL = 'http://test.com';
-    global.key = "";
+    global.testKey = "";
+    global.uniquenessTestKey = "";
   });
 
   /*
@@ -133,7 +134,23 @@ describe('URL API', function(){
       expect(res).to.be.json;
       expect(res.body).to.not.be.null;
       expect(res.body.key === global.testURL).to.be.false;
-      global.key = res.body.key; //save the key (shortened url) for use in other tests
+      global.testKey = res.body.key; //save the key (shortened url) for use in other tests
+      done();
+    });
+  });
+
+  it('ensures redirect keys are unique for POST /api/url', function(done){
+
+    request(app)
+    .post('/api/url')
+    .send({url: global.testURL})
+    .end(function(err, res){
+      expect(err).to.be.null;
+      expect(res.statusCode).to.be.equal(201);
+      expect(res).to.be.json;
+      expect(res.body).to.not.be.null;
+      expect(res.body.key === global.testURL).to.be.false;
+      global.uniqenessTestKey = res.body.key; //save the key (shortened url) for use in other tests
       done();
     });
   });
@@ -141,9 +158,9 @@ describe('URL API', function(){
   //use same key retrived from creation test
   it('successfully redirects GET /* made with test redirect key', function(done){
     expect(key).to.be.not.null;
-    expect(global.key).to.not.be.empty;
+    expect(global.testKey).to.not.be.empty;
     request(app)
-    .get('/'+ global.key)
+    .get('/'+ global.testKey)
     .end(function(err, res){
       expect(err).to.be.null;
       expect(res.statusCode).to.be.equal(301);
@@ -156,12 +173,30 @@ describe('URL API', function(){
   it('successfully deletes a redirection via a supplied key', function(done){
     request(app)
     .delete('/api/key')
-    .send({key : global.key})
+    .send({key : global.testKey})
     .end(function(err, res){
       expect(err).to.be.null;
       expect(res.statusCode).to.be.equal(200);
       request(app)
-      .get('/' + global.key)
+      .get('/' + global.testKey)
+      .end(function(err, res){
+        expect(err).to.be.null;
+        expect(res.statusCode).to.be.equal(404);
+        done();
+      });
+    });
+  });
+
+  //use same key retrived from creation test
+  it('successfully deletes uniqueness test key', function(done){
+    request(app)
+    .delete('/api/key')
+    .send({key : global.uniqenessTestKey})
+    .end(function(err, res){
+      expect(err).to.be.null;
+      expect(res.statusCode).to.be.equal(200);
+      request(app)
+      .get('/' + global.uniqenessTestKey)
       .end(function(err, res){
         expect(err).to.be.null;
         expect(res.statusCode).to.be.equal(404);
