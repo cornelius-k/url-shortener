@@ -75,7 +75,7 @@ module.exports = {
 
   },
 
-  shorten : function (url, method = 'default'){
+  shorten : function (url, method){
     var shortened;
     var shortened2;
     var promises = [];
