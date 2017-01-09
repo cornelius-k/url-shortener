@@ -10,3 +10,8 @@ database or set `NODE_ENV=development`, create a `config.development.js` file in
 ###install & run
 `npm install`
 `node app.js`
+
+
+
+![](demo.gif)
+
